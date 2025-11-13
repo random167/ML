@@ -1,0 +1,98 @@
+💠 Step 1: Create Database and Collection
+use employee_details
+
+
+
+1️⃣ Insert Sample Documents
+db.employee_details.insertMany([
+  { emp_id: 1, emp_name: "Aradhana", dept: "HR", salary: 40000, mobile_no: "9876543210" },
+  { emp_id: 2, emp_name: "Rohit", dept: "Finance", salary: 55000, mobile_no: "9876501234" },
+  { emp_id: 3, emp_name: "Sneha", dept: "IT", salary: 60000, mobile_no: "9988776655" },
+  { emp_id: 4, emp_name: "Amit", dept: "IT", salary: 65000, mobile_no: "9988123456" },
+  { emp_id: 5, emp_name: "Riya", dept: "HR", salary: 48000, mobile_no: "9876512345" }
+])
+
+
+💠 Step 2: Create Indexes
+
+Create Index on Department
+db.employee_details.createIndex({ dept: 1 })
+
+
+
+Create Index on Salary
+db.employee_details.createIndex({ salary: -1 })
+
+
+View All Indexes
+db.employee_details.getIndexes()
+
+
+💠 Step 3: Perform Aggregation Operations
+
+1: Total Salary by Department
+db.employee_details.aggregate([
+  { $group: { _id: "$dept", total_salary: { $sum: "$salary" } } }
+])
+
+
+2: Average Salary of Each Department
+db.employee_details.aggregate([
+  { $group: { _id: "$dept", avg_salary: { $avg: "$salary" } } }
+])
+
+3: Find Employees with Salary > 50000
+db.employee_details.aggregate([
+  { $match: { salary: { $gt: 50000 } } }
+])
+
+
+Example 4: Sort Employees by Salary (Descending)
+db.employee_details.aggregate([
+  { $sort: { salary: -1 } }
+])
+
+
+💠 Step 4: Viva Theory Questions and Answers
+Q1. What is indexing in MongoDB?
+
+Indexing is a technique to improve the performance of search queries.
+It helps MongoDB find data faster without scanning the entire collection.
+
+Q2. What is the default index in MongoDB?
+
+Every collection automatically has an index on the _id field by default.
+It ensures each document is uniquely identified.
+
+Q3. How do you create an index on a field?
+
+We use the createIndex() method.
+For example:
+
+db.employee_details.createIndex({ dept: 1 })
+
+
+Here, 1 represents ascending order.
+
+Q4. What is the purpose of the aggregation framework?
+
+The aggregation framework processes data records and returns computed results — similar to SQL’s GROUP BY, SUM, or AVG.
+It is used for performing data analysis inside MongoDB.
+
+Q5. What does $group do in aggregation?
+
+$group groups documents by a specified field and allows applying operations like $sum, $avg, $max, $min, etc. on those groups.
+
+Q6. What does $match do in aggregation?
+
+$match filters documents based on a given condition — similar to the WHERE clause in SQL.
+
+Q7. What is the difference between find() and aggregate()?
+
+find() is used for simple queries (retrieving documents).
+
+aggregate() is used for complex queries involving grouping, filtering, and calculations.
+
+Q8. Can multiple indexes be created on a collection?
+
+Yes, MongoDB allows multiple indexes on different fields to improve query performance. However, creating too many indexes can slow down insert and update operations.

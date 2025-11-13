@@ -1,0 +1,95 @@
+db.customer_order.insertMany([
+  { order_id: 1, customer_name: "Aradhana", status: "Delivered", amount: 1200 },
+  { order_id: 2, customer_name: "Aradhana", status: "Pending", amount: 800 },
+  { order_id: 3, customer_name: "Rohit", status: "Delivered", amount: 1500 },
+  { order_id: 4, customer_name: "Rohit", status: "Cancelled", amount: 500 },
+  { order_id: 5, customer_name: "Sneha", status: "Delivered", amount: 2000 }
+])
+
+-Total amt spent by each cust:
+var mapCustomer = function() {
+  emit(this.customer_name, this.amount);
+};
+
+var reduceCustomer = function(key, values) {
+  return Array.sum(values);
+};
+
+db.customer_order.mapReduce(
+  mapCustomer,
+  reduceCustomer,
+  { out: "total_spent_by_customer" }
+);
+
+db.total_spent_by_customer.find().pretty();
+
+
+-Total amt for every status:
+var mapStatus = function() {
+  emit(this.status, this.amount);
+};
+
+var reduceStatus = function(key, values) {
+  return Array.sum(values);
+};
+
+db.customer_order.mapReduce(
+  mapStatus,
+  reduceStatus,
+  { out: "total_amount_by_status" }
+);
+
+db.total_amount_by_status.find().pretty();
+
+-Theory:
+1️⃣ What is MapReduce in MongoDB?
+
+MapReduce in MongoDB is a data processing technique used to perform large-scale data aggregation. It divides the processing into two main phases — the Map phase and the Reduce phase.
+
+In the Map phase, MongoDB processes each document and emits key-value pairs.
+
+In the Reduce phase, it groups all emitted values by key and performs an operation like sum, average, or count to produce the final result.
+
+2️⃣ What is the purpose of the Map function?
+
+The Map function processes each document in the collection and emits one or more key-value pairs using the emit() function. The key usually represents a category (like customer name or status), and the value is the amount or quantity you want to calculate.
+
+3️⃣ What is the purpose of the Reduce function?
+
+The Reduce function takes all the values that have the same key and combines them into a single value. This function typically performs operations like addition, averaging, or concatenation.
+
+4️⃣ What is the difference between MapReduce and Aggregation Framework?
+
+The Aggregation Framework is faster, easier to use, and optimized for most common data analysis operations in MongoDB.
+MapReduce is more flexible — it allows writing custom JavaScript logic for complex computations — but it is slower because it runs JavaScript functions internally.
+
+5️⃣ What is the “out” parameter in MapReduce?
+
+The out parameter specifies where the output of the MapReduce operation will be stored. For example,
+
+{ out: "total_amount_by_status" }
+
+
+means the result will be stored in a new collection called total_amount_by_status.
+
+6️⃣ What data type does emit() produce?
+
+The emit() function produces a key-value pair. The key can be a string, number, or object, and the value is often a number or object that will be processed in the reduce phase.
+
+Example:
+
+emit(this.customer_name, this.amount);
+
+7️⃣ Can MapReduce be used for filtering data?
+
+Yes. You can filter documents before running MapReduce by adding a query condition.
+For example:
+
+db.customer_order.mapReduce(map, reduce, { query: { status: "Delivered" }, out: "delivered_orders" });
+
+
+This runs MapReduce only on documents where the status is "Delivered".
+
+8️⃣ When should you use MapReduce over Aggregation?
+
+You should use MapReduce when you need very complex logic that the aggregation framework cannot perform. For example, if your calculation involves loops, multiple conditional statements, or custom JavaScript functions, MapReduce is a better choice.

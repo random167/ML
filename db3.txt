@@ -1,0 +1,74 @@
+Creating Database and Collection
+use Book_Details
+
+
+1️⃣ Insert minimum 5 documents
+db.Book_Details.insertMany([
+  { Book_Id: 1, Title: "Introduction to AI", No_of_pages: 250, Author: "Peter Norvig", Price: 3000 },
+  { Book_Id: 2, Title: "Database Systems", No_of_pages: 400, Author: "Abraham Silberschatz", Price: 4500 },
+  { Book_Id: 3, Title: "Clean Code", No_of_pages: 350, Author: "Robert C. Martin", Price: 2800 },
+  { Book_Id: 4, Title: "Machine Learning Basics", No_of_pages: 200, Author: "Tom Mitchell", Price: 3200 },
+  { Book_Id: 5, Title: "Data Structures", No_of_pages: 150, Author: "Mark Allen Weiss", Price: 1800 }
+])
+
+
+2️⃣ Display books having price 3000 or No_of_pages 200
+
+Use the $or operator:
+
+db.Book_Details.find({
+  $or: [
+    { Price: 3000 },
+    { No_of_pages: 200 }
+  ]
+})
+
+
+3️⃣ Display books in descending order of price and ascending order of title
+db.Book_Details.find().sort({ Price: -1, Title: 1 })
+
+
+
+4️⃣ Update price of Book_Id 3 to 500
+db.Book_Details.updateOne(
+  { Book_Id: 3 },
+  { $set: { Price: 500 } }
+)
+
+
+5️⃣ Display all documents from Book_Details by skipping first 2 documents
+db.Book_Details.find().skip(2)
+
+
+💠 Viva Questions and Answers
+Q1. What command is used to insert multiple documents in MongoDB?
+
+The command insertMany() is used to insert multiple documents at once in a collection.
+
+Q2. What does the $or operator do?
+
+The $or operator retrieves documents that satisfy at least one of the given conditions.
+
+Q3. How do you sort documents in MongoDB?
+
+You use the sort() method.
+
+1 means ascending order
+
+-1 means descending order
+Example: .sort({ Price: -1, Title: 1 })
+
+Q4. What is the use of $set in an update query?
+
+The $set operator is used to modify the value of a field without affecting other fields in the document.
+
+Q5. What does skip() do in MongoDB?
+
+The skip() method is used to skip a specified number of documents in the output.
+It’s commonly used for pagination when viewing data in parts.
+
+Q6. What is the difference between updateOne() and updateMany()?
+
+updateOne() updates only the first document that matches the condition.
+
+updateMany() updates all documents that match the condition.

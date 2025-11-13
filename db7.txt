@@ -1,0 +1,88 @@
+💠 Step 1: Create Database and Collection
+use employee_details
+
+
+1️⃣ Insert Sample Documents
+db.employee_details.insertMany([
+  { emp_id: 1, emp_name: "Aradhana", dept: "HR", salary: 40000, mobile_no: "9876543210" },
+  { emp_id: 2, emp_name: "Rohit", dept: "Finance", salary: 55000, mobile_no: "9876501234" },
+  { emp_id: 3, emp_name: "Sneha", dept: "IT", salary: 60000, mobile_no: "9988776655" },
+  { emp_id: 4, emp_name: "Amit", dept: "IT", salary: 30000, mobile_no: "9988123456" },
+  { emp_id: 5, emp_name: "Riya", dept: "HR", salary: 48000, mobile_no: "9876512345" },
+  { emp_id: 6, emp_name: "Kiran", dept: "Finance", salary: 25000, mobile_no: "9876598765" }
+])
+
+
+
+💠 Step 2: Perform 6 Queries
+Query 1 — Using AND condition
+
+👉 Display employees from “IT” department whose salary is greater than 40000.
+
+db.employee_details.find({ $and: [ { dept: "IT" }, { salary: { $gt: 40000 } } ] })
+
+
+
+Query 2 — Using OR condition
+
+👉 Display employees who work in HR department or have salary less than 30000.
+
+db.employee_details.find({ $or: [ { dept: "HR" }, { salary: { $lt: 30000 } } ] })
+
+
+
+Query 3 — Sort employees by salary (Descending Order)
+db.employee_details.find().sort({ salary: -1 })
+
+
+
+Query 4 — Limit the output to first 3 employees
+db.employee_details.find().limit(3)
+
+
+
+Query 5 — Skip the first 2 documents
+db.employee_details.find().skip(2)
+
+
+
+Query 6 — Find employees having salary greater than 30000 and less than 55000
+db.employee_details.find({ salary: { $gt: 30000, $lt: 55000 } })
+
+
+
+💠 Viva Questions and Answers
+Q1. What is the use of the $and operator?
+
+The $and operator is used to combine multiple conditions where all must be true for a document to be selected.
+
+Q2. What is the use of the $or operator?
+
+The $or operator retrieves documents that satisfy at least one of the specified conditions.
+
+Q3. What does sort() do in MongoDB?
+
+It arranges documents in a particular order:
+
+1 → ascending order
+
+-1 → descending order
+
+Q4. What is the purpose of limit() and skip()?
+
+limit() restricts the number of documents in the output.
+
+skip() skips a given number of documents.
+They are often used together for pagination.
+
+Q5. What are $gt and $lt operators?
+
+$gt stands for “greater than”
+
+$lt stands for “less than”
+They are used for comparing numeric values in queries.
+
+Q6. How is MongoDB different from SQL when filtering data?
+
+In MongoDB, we use JSON-like query syntax with operators like $and, $or, $gt, etc.
+In SQL, we use WHERE clauses with logical operators like AND, OR, >, < etc.

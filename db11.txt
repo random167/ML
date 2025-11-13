@@ -1,0 +1,68 @@
+💠 Step 1: Create Database and Collection
+use product_details
+
+
+1️⃣ Insert Minimum 5 Documents
+db.product_details.insertMany([
+  { product_id: 1, product_name: "Smartphone", brand: "Samsung", model: "Galaxy S22", price: 75000 },
+  { product_id: 2, product_name: "Laptop", brand: "Dell", model: "Inspiron 15", price: 55000 },
+  { product_id: 3, product_name: "Tablet", brand: "Samsung", model: "Galaxy Tab S8", price: 48000 },
+  { product_id: 4, product_name: "Headphones", brand: "Sony", model: "WH-1000XM5", price: 32000 },
+  { product_id: 5, product_name: "Smartwatch", brand: "Apple", model: "Watch Series 9", price: 85000 }
+])
+
+2️⃣ Display First 3 Documents
+db.product_details.find().limit(3)
+
+
+3️⃣ Display All Products of Brand “Samsung”
+db.product_details.find({ brand: "Samsung" })
+
+
+4️⃣ Display All Products Having Price Greater Than or Equal to 500
+db.product_details.find({ price: { $gte: 500 } })
+
+
+5️⃣ Delete Document of Product_ID 5
+db.product_details.deleteOne({ product_id: 5 })
+
+
+💠 Step 3: Viva Questions and Answers
+Q1. How do you create and switch to a new database in MongoDB?
+
+By using the use command.
+Example:
+
+use product_details
+
+
+If the database doesn’t exist, MongoDB creates it when a document is inserted.
+
+Q2. What command is used to insert multiple documents at once?
+
+The insertMany() command inserts multiple documents into a collection.
+
+Q3. What does the limit() function do?
+
+limit(n) restricts the number of documents displayed to n.
+For example, limit(3) shows only the first 3 documents.
+
+Q4. What does $gte mean?
+
+$gte stands for “greater than or equal to.”
+Used for filtering numeric values.
+
+Q5. What command is used to delete a document?
+
+deleteOne() deletes the first matching document, while deleteMany() deletes all matching documents.
+
+Q6. How do you find documents based on a specific value?
+
+By using the find() method with a condition.
+Example:
+
+db.product_details.find({ brand: "Samsung" })
+
+Q7. What happens if you use deleteMany() instead of deleteOne()?
+
+deleteMany() will remove all documents that match the given condition, not just the first one.

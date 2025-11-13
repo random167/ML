@@ -1,0 +1,84 @@
+
+💠 Step 1: Create Database and Collection
+use student_details
+
+
+1️⃣ Insert Minimum 5–6 Documents
+db.student_details.insertMany([
+  { roll_no: 1, stud_name: "Aradhana", dept: "Computer", mobile_no: "9876543210", marks: 85 },
+  { roll_no: 2, stud_name: "Rohit", dept: "Mechanical", mobile_no: "9876501234", marks: 72 },
+  { roll_no: 3, stud_name: "Sneha", dept: "Computer", mobile_no: "9988776655", marks: 90 },
+  { roll_no: 4, stud_name: "Amit", dept: "Electrical", mobile_no: "9988123456", marks: 65 },
+  { roll_no: 5, stud_name: "Riya", dept: "Civil", mobile_no: "9876512345", marks: 78 },
+  { roll_no: 6, stud_name: "Kiran", dept: "Mechanical", mobile_no: "9876598765", marks: 55 }
+])
+
+
+💠 Step 2: Perform 6 MongoDB Queries
+Query 1 — Using AND condition
+
+👉 Display students from “Computer” department who have marks greater than 80.
+
+db.student_details.find({ $and: [ { dept: "Computer" }, { marks: { $gt: 80 } } ] })
+
+
+Query 2 — Using OR condition
+
+👉 Display students who belong to “Mechanical” department or have marks less than 60.
+
+db.student_details.find({ $or: [ { dept: "Mechanical" }, { marks: { $lt: 60 } } ] })
+
+
+Query 3 — Sort students by marks (Descending)
+db.student_details.find().sort({ marks: -1 })
+
+
+Query 4 — Limit output to top 3 students
+db.student_details.find().sort({ marks: -1 }).limit(3)
+
+
+Query 5 — Skip first 2 documents
+db.student_details.find().skip(2)
+
+
+Query 6 — Display students having marks between 60 and 80
+db.student_details.find({ marks: { $gt: 60, $lt: 80 } })
+
+
+💠 Step 4: Viva Questions and Answers
+Q1. What is the use of $and in MongoDB?
+
+The $and operator is used to filter documents that satisfy all the given conditions.
+Example: students from “Computer” dept and marks > 80.
+
+Q2. What is the use of $or in MongoDB?
+
+The $or operator is used to select documents that satisfy at least one of the given conditions.
+
+Q3. What does sort() do in MongoDB?
+
+sort() arranges documents in ascending or descending order.
+
+Use 1 for ascending order.
+
+Use -1 for descending order.
+
+Q4. What is the use of limit() and skip()?
+
+limit(n) → restricts the output to n documents.
+
+skip(n) → ignores the first n documents in the result set.
+Used together for pagination.
+
+Q5. What do $gt and $lt mean?
+
+$gt → greater than
+
+$lt → less than
+They are used for range queries on numeric fields.
+
+Q6. What is the difference between find() and aggregate()?
+
+find() → used for simple queries and filters.
+
+aggregate() → used for complex computations like grouping, averaging, or summing.

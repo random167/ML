@@ -1,0 +1,62 @@
+💠 Step 1: Create Database and Collection
+use customer_order
+
+db.customer_order.insertMany([
+  { order_id: 1, status: "Delivered", amount: 2500 },
+  { order_id: 2, status: "Pending", amount: 1800 },
+  { order_id: 3, status: "Delivered", amount: 3200 },
+  { order_id: 4, status: "Cancelled", amount: 900 },
+  { order_id: 5, status: "Pending", amount: 2200 }
+])
+
+
+💠 Step 2: Define Map Function
+var mapFunction = function() {
+  emit(this.status, this.amount);
+};
+
+
+💠 Step 3: Define Reduce Function
+var reduceFunction = function(key, values) {
+  return Array.sum(values);
+};
+s.
+
+💠 Step 4: Execute MapReduce
+db.customer_order.mapReduce(
+  mapFunction,
+  reduceFunction,
+  { out: "total_amount_by_status" }
+)
+
+
+💠 Step 5: Display Output
+db.total_amount_by_status.find().pretty()
+
+
+💠 Step 6: Viva Questions and Answers
+Q1. What is MapReduce in MongoDB?
+
+MapReduce is a data processing model used to perform large-scale aggregation operations by dividing them into two phases — Map and Reduce.
+
+Q2. What is the role of the Map function?
+
+The Map function emits key-value pairs from each document.
+Example: emit(status, amount).
+
+Q3. What is the role of the Reduce function?
+
+The Reduce function combines all emitted values for the same key into a single result (like sum, average, etc.).
+
+Q4. What is the output of MapReduce stored as?
+
+The output is stored as a new collection defined in the out parameter.
+
+Q5. What are some alternatives to MapReduce in MongoDB?
+
+The Aggregation Pipeline is the modern, faster alternative to MapReduce for data aggregation tasks.
+
+Q6. How do you calculate total amount by status using aggregation instead of MapReduce?
+db.customer_order.aggregate([
+  { $group: { _id: "$status", total_amount: { $sum: "$amount" } } }
+])
